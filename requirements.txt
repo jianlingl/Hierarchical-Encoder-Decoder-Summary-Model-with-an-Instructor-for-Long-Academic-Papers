@@ -1,0 +1,61 @@
+tensorflow-gpu==1.15.2
+pandas
+tabulate
+pyrouge
+
+记得，运行前，请先进行天河上超参数的修改
+
+
+这是师姐你和我的模型整合起来的共同代码，
+通过在hps中添加'Increase_section_semantics',
+'Increase_doc_semantics'两个bool超参数来设置。
+
+
+
+目前，模型使用的extract summary 仍先用原文的摘要来暂时代替
+
+
+是这么代码变动：
+model.py中                98              _make_feed_dict() 增加了feed_dict[self._extract_sum] = batch.extract_sum_id
+                          69             增加了self._extract_sum = tf.placeholder(tf.int32, [hps.batch_size, hps.max_extract_len], name='extract_sum')
+                         276            change into       hps.max_extract_len
+                         899              增加了 feed[self._extract_sum] = batch._extract_sum
+
+
+run_summarization.py中   103  增加 tf.app.flags.DEFINE_integer('max_extract_len', 210, 'Maximum input extract length')
+                         441  增加 'max_extract_len'
+batch_reader.py中
+                 _init_  269 增加  extract_sum = ' '.join(extract_sum_sentence) ------  self.extract_sum_id=......
+                          96 增加 参数 extract_sum_sentence
+          batch  init_encoder_seq()
+                          389  增加  self._extract_sum_id = np.zeros((hps.batch_size, hps.max_extract_len), dtype=np.int32)                  关键在于 example _init_ 343代码参数的传入问题
+                          397  增加  self._extract_sum[i, :] = ex.extract_sum_id[:]
+          Batcher __int__()
+                          559 change into    self._num_batch_q_threads = self._num_example_q_threads / self._hps.batch_size
+       (future)           570 _init_()   参数也要加一个 exatract_sum_key
+       (future)           747 text_generator  teturn也加一个 exatract_sum
+                          657 change into : example = Example(article_text, abstract_sentences,abstract_sentences, .....  _fill_example_queue(self)中
+
+
+
+section   False
+doc       True
+train  eval  decode
+  y     y     y
+
+
+section   False
+doc       False
+train  eval  decode
+  y     y     y
+
+
+section   True
+doc       False
+train  eval  decode
+  y     y     y
+
+section    True
+doc        True
+train  eval  decode
+  y     y     y

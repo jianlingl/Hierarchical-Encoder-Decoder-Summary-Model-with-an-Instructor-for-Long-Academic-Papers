@@ -1,0 +1,3 @@
+we introduce a general framework for evaluating conditional text generation that is designed to detect factual inconsistencies in generated text with respect to some input .
+the framework consists of three steps , given a question answering (qa) models to answer these questions given both the input and the generated text .
+the framework is based on the similarity of corresponding answers .

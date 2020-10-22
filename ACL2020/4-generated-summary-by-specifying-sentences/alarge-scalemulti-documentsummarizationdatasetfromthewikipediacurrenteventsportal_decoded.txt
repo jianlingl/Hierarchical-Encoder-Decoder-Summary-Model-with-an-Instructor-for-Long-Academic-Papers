@@ -1,0 +1,3 @@
+we present the wikipedia current events portal (wcep) dataset, .
+the dataset consists of 10,200 clusters with one human-written summary and 235 articles per cluster on average .
+the dataset starting from the wikipedia current events portal (wcep)1 is better aligned with several real-world industrial use cases .

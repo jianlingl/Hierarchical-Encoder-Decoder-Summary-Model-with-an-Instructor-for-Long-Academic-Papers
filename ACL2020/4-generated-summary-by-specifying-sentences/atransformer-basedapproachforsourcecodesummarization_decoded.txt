@@ -1,0 +1,3 @@
+we present a new source code summarization program that uses relative position representation (vaswani et al., .
+the pairwise relationship between source code tokens using relative position representation (shaw et al., 2017) we can achieve significant improvements over learning sequence information of code tokens using relative position representation (shaw et al., 2017) .
+the proposed approach is simple but effective as it outperforms the fancy and sophisticated state-of-the-art source code summarization techniques .
